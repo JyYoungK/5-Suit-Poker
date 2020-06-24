@@ -1,0 +1,211 @@
+div[id*="pcard"] .popover { 
+
+	border-radius: 20px;
+	border: 2px solid orange;
+	width: 80px;
+	height: 55px;
+	left: -95px !important; 
+}
+div[id*="dcard"] .popover {
+
+	border-radius: 20px;
+	border: 2px solid orange;
+	width: 90px;
+	height: 55px;
+	left: -105px !important; 
+}
+
+#wrapper {
+	margin: 0 auto;
+	width: 1000px;
+}
+
+h3 {
+	margin: 5px 0;
+	text-align: center;
+}
+
+#game {
+	border-radius: 5px;
+	color: #333;
+	font: 14px/17px Helvetica, Arial, Verdana, sans-serif;
+	height: 550px;
+	margin: 0 auto;
+	position: relative;
+	width: 1000px;
+}
+
+div#dscore {
+	position: absolute;
+	bottom: 30px;
+}
+
+div#pscore {
+	position: absolute;
+	bottom: 15px;
+}
+
+div#phand, div#dhand {
+	font-weight: 700;
+	/*left: 50%;*/
+	position: absolute;
+	top: -122px;
+	white-space: nowrap;
+	width: 1000px;
+}
+
+div#phand { }
+
+div#dhand { }
+
+div[class*="card"] {
+	background: #FFF;
+	border: 6px solid #FFF;
+	border-radius: 5px;
+	box-shadow: 0 0 1px #000;
+	display: inline-block;
+	height: 106px;
+	margin: 0 5px;
+	position: absolute;
+	right: 0;
+	width: 79px;
+}
+
+.down {
+	background: #B20000 url('https://www.clowerweb.com/cors/blackjack/card.png') center center no-repeat !important;
+}
+
+span.pos-0 {
+	left: 0;
+	position: absolute;
+	top: 0;
+}
+
+span.pos-1 {
+	bottom: 0;
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+	position: absolute;
+	right: 0;
+	transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+}
+
+span.rank {
+	font-size: 18px;
+}
+
+span.suit {
+	font-size: 22px;
+}
+
+.black {
+	color: black;
+}
+
+.red {
+	color: red;
+}
+
+.green {
+	color: green;
+}
+
+.blue {
+	color: blue;
+}
+
+.yellow {
+	color: goldenrod;
+}
+
+#result {
+	position: absolute;
+	bottom: 0;
+}
+
+#actions {
+	margin: 15px 0 0 0;
+    text-align: center;
+}
+
+input#wager { margin-left: 5px; position: relative; top: 4px }
+
+#actionButtons{
+	display: flex;
+	flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#money, #money:before {
+	border-radius: 5px;
+	bottom: 0;
+	height: 55px;
+	padding: 7px;
+	position: absolute;
+	right: 0;
+	width: 250px;
+}
+
+#money {
+	border: 2px solid #FFC926;
+}
+
+#money:before {
+	background: #333;
+	content: '';
+	opacity: 0.8;
+}
+
+#cash, #bank {
+	color: yellow;
+	font-family: 'Press Start 2P', cursive;
+	text-shadow:2px 2px goldenrod;
+	padding: 10px;
+	margin: 12px 0;
+	position: relative;
+	z-index: 1;
+}
+
+#newGame{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+}
+
+#deal{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+}
+
+#hit{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+}
+
+#stand{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+}
+
+#wager{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+	width: 15%;
+}
+
+#bet{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+	margin-left: 10px;
+}
+
+#alert {
+	margin: 0 auto;
+	opacity: 0.95;
+	position: relative;
+	text-align: center;
+	top: 34.5%;
+	width: 500px;
+	z-index: 0;
+}
