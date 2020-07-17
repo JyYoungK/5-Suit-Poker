@@ -1,5 +1,4 @@
 div[id*="pcard"] .popover { 
-
 	border-radius: 20px;
 	border: 2px solid orange;
 	width: 80px;
@@ -7,7 +6,6 @@ div[id*="pcard"] .popover {
 	left: -95px !important; 
 }
 div[id*="dcard"] .popover {
-
 	border-radius: 20px;
 	border: 2px solid orange;
 	width: 90px;
@@ -15,10 +13,10 @@ div[id*="dcard"] .popover {
 	left: -105px !important; 
 }
 
-#wrapper {
+/* #wrapper {
 	margin: 0 auto;
 	width: 1000px;
-}
+} */
 
 h3 {
 	margin: 5px 0;
@@ -29,7 +27,7 @@ h3 {
 	border-radius: 5px;
 	color: #333;
 	font: 14px/17px Helvetica, Arial, Verdana, sans-serif;
-	height: 550px;
+	height: 370px;
 	margin: 0 auto;
 	position: relative;
 	width: 1000px;
@@ -64,15 +62,15 @@ div[class*="card"] {
 	border-radius: 5px;
 	box-shadow: 0 0 1px #000;
 	display: inline-block;
-	height: 106px;
+	height: 110px;
+	width: 80px;
 	margin: 0 5px;
 	position: absolute;
 	right: 0;
-	width: 79px;
 }
 
 .down {
-	background: #B20000 url('https://www.clowerweb.com/cors/blackjack/card.png') center center no-repeat !important;
+	background: #B20000 url('./card2.png') center center no-repeat !important;
 }
 
 span.pos-0 {
@@ -129,8 +127,6 @@ span.suit {
     text-align: center;
 }
 
-input#wager { margin-left: 5px; position: relative; top: 4px }
-
 #actionButtons{
 	display: flex;
 	flex-direction: column;
@@ -159,14 +155,82 @@ input#wager { margin-left: 5px; position: relative; top: 4px }
 }
 
 #cash, #bank {
-	color: yellow;
+	color: gold;
 	font-family: 'Press Start 2P', cursive;
-	text-shadow:2px 2px goldenrod;
+	text-shadow:2px 3px goldenrod;
+	font-size: 20px;
 	padding: 10px;
 	margin: 12px 0;
 	position: relative;
 	z-index: 1;
 }
+
+.lottery{
+	color: rgb(28, 185, 185);
+	font-family: 'Press Start 2P', cursive;
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+	animation: blink 1s steps(4, start) infinite
+}
+
+.playing{
+	color: rgb(44, 201, 44);
+	text-shadow: 2px 2px green;
+	font-family: 'Press Start 2P', cursive;
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+}
+
+.champion{
+	color: rgb(218, 32, 203);
+	font-family: 'Press Start 2P', cursive;
+	text-shadow:2px 3px rgb(140, 0, 255);
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+	animation: blink 1s steps(4, start) infinite
+}
+
+.won{
+	color: goldenrod;
+	font-family: 'Press Start 2P', cursive;
+	text-shadow:2px 3px rgb(255, 30, 0);
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+	animation: blink 1s steps(4, start) infinite
+}
+
+.lost{
+	color: rgb(175, 174, 174);
+	font-family: 'Press Start 2P', cursive;
+	text-shadow:1px 1px rgb(117, 113, 112);
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+}
+
+.tie{
+	color: black;
+	font-family: 'Press Start 2P', cursive;
+	margin: 8px;
+	padding: 3px;
+	position: relative;
+	z-index: 1;
+}
+
+@keyframes blink{
+	to {
+	    visibility: hidden;
+	}
+}  
 
 #newGame{
 	font-family: 'Press Start 2P', cursive;
@@ -188,15 +252,24 @@ input#wager { margin-left: 5px; position: relative; top: 4px }
 	font-size: 10px;
 }
 
+#retry{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 10px;
+	display: none;
+}
+
 #wager{
 	font-family: 'Press Start 2P', cursive;
 	font-size: 10px;
 	width: 15%;
 }
 
+input#wager { margin-left: 5px; position: relative;}
+
+
 #bet{
 	font-family: 'Press Start 2P', cursive;
-	font-size: 10px;
+	font-size: 11px;
 	margin-left: 10px;
 }
 
@@ -205,7 +278,56 @@ input#wager { margin-left: 5px; position: relative; top: 4px }
 	opacity: 0.95;
 	position: relative;
 	text-align: center;
-	top: 34.5%;
+	top: 4.5%;
 	width: 500px;
 	z-index: 0;
+	background: #088A68;
+	color: whitesmoke;
 }
+
+@keyframes rotate {
+	100% {
+		transform: rotate(2turn);
+	}
+}
+
+
+
+/* .wrapper{
+	position: relative;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+}
+.wrapper::before {
+	content: '';
+	position: absolute;
+	z-index: -2;
+	left: -50%;
+	top: -50%;
+	width: 200%;
+	height: 200%;
+	background-repeat: no-repeat;
+	background-size: 50% 50%, 50% 50%;
+	background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+	background-image: linear-gradient(#d53e33, #d53e33), linear-gradient(#fbb300, #fbb300), linear-gradient(#d53e33, #d53e33), linear-gradient(#fbb300, #fbb300);
+	animation: rotate 0.5s linear infinite;
+}
+	
+.wrapper::after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	left: 6px;
+	top: 6px;
+	width: calc(100% - 12px);
+	height: calc(100% - 12px);
+	background: white;
+	border-radius: 5px;
+} */

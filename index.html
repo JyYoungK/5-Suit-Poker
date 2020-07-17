@@ -11,7 +11,7 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div id="wrapper">
+<div class="wrapper">
   <div id="game">
     <div id="alert" class="alert alert-error hide"><span></span></div>
     <div id="dealer">
@@ -22,13 +22,16 @@
     </div>
   </div>
   <div id="actionButtons">
-    <div id="actions">
-        <button id="deal" class="btn">Deal</button>
-        <button id="hit" class="btn" disabled>Hit</button>
-        <button id="stand" class="btn" disabled>Stand</button>
-        <strong id="bet"> Wager: $</strong><input id="wager" class="input-small" type="text" />
+      <div id="actions">
+        <button id="deal">Deal</button>
+        <button id="hit" disabled>Hit</button>
+        <button id="stand" disabled>Stand</button>
+        <button id="retry">Retry?</button>
+        <strong id="bet"> Bet: $</strong><input id="wager" class="input-small" type="text" />
       </div>
-      <span id="earning">Total Earning: $<span></span> x2</span>
+      <div class="lottery" id="earning"> 
+            Press Deal to start 
+      </div>
       <span id="cash">Wallet: $<span></span></span>
   </div>
 </div>

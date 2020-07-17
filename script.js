@@ -1,19 +1,10 @@
 (function () {
-
-/*****************************************************************/
-/*************************** Globals *****************************/
-/*****************************************************************/
-
-	var game      = new Game(),
+	var game = new Game(),
 			player    = new Player(),
 			dealer    = new Player(),
 			running   = false,
 			blackjack = false,
 			deal;
-
-/*****************************************************************/
-/*************************** Classes *****************************/
-/*****************************************************************/
 
 	function Player() {
 		var hand  = [],
@@ -72,6 +63,11 @@
 			this.updateBoard();
 		};
 
+		this.retryCash = function(){
+			cash = 1000;
+			this.updateBoard();
+		}
+
 		this.getBank = function() {
 			$('#bank').html('Winnings: $' + bank.formatMoney(2, '.', ','));
 
@@ -97,7 +93,7 @@
 	}
 
 	function Deck() {
-		var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
+				var ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'],
 				suits = ['&#9824;', '&#9827;', '&#9829;', '&#9670;', '&#11089;'],
 				deck  = [],
 				i, x, card;
@@ -124,7 +120,7 @@
 	}
 
 	function Shuffle(deck) {
-		var set      = deck.getDeck(),
+		var set = deck.getDeck(),
 				shuffled = [],
 				card;
 
@@ -174,15 +170,23 @@
 	}
 
 	function Deal() {
+
+		$("#earning").html("MONEY IN THE POT $" + player.getWager() + " X2");
+		$('#earning').removeClass();
+		$('#earning').addClass("playing");
 		
 		ante = player.getWager() + (player.getWager() * 0.2);
-		if (ante > player.getCash()){
+		
+		if (player.getCash() < 1){
+			document.getElementById("hit").innerHTML = "ALL IN";
+		}
+		else if (ante > player.getCash()){
 			document.getElementById("hit").innerHTML = "ALL IN for " + player.getCash();
 		}
 		else{
 			document.getElementById("hit").innerHTML = "Hit for " + ante;
 		}
-		var deck     = new Deck(),
+		var deck = new Deck(),
 				shuffle  = new Shuffle(deck),
 				shuffled = shuffle.getShuffle(),
 				card;
@@ -226,7 +230,12 @@
 						dealer.flipCards();
 						$('#dscore span').html(dealer.getScore());
 					}
-				} else {
+				} 
+				else if (player.getHand().length === 2 && dealer.getHand().length === 2 && player.getCash() < 1){
+					dealer.flipCards();
+					getWinner();
+				}
+				else {
 					if(dhand.length > 1) {
 						setActions('run');
 					}
@@ -264,24 +273,18 @@
 				showBoard();
 			} else {
 				player.setWager(-wager);
-				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-				showAlert('Wager cannot exceed available cash!');
+				showAlert('Bet amount exceeded!');
 			}
 		};
 	}
 
-/*****************************************************************/
-/************************* Extensions ****************************/
-/*****************************************************************/
-
 	Player.prototype.hit = function() {
 		var pscore;
-
 		deal.dealCard(1, 0, [this]);
 		pscore = player.getScore();
 		if (this === player){
 			ante = player.getWager() + (player.getWager() * 0.2);
-			if (ante > player.getCash()){
+			if (ante >= player.getCash()){
 				player.setWager(player.getCash()); //ALL IN
 				player.setCash(-player.getCash()); //ALL IN
 				player.stand();
@@ -303,7 +306,7 @@
 		}
 
 		ante = player.getWager() + (player.getWager() * 0.2);
-		if (ante > player.getCash()){
+		if (ante >= player.getCash()){
 			document.getElementById("hit").innerHTML = "ALL IN for " + player.getCash();
 		}
 		document.getElementById("hit").innerHTML = "Hit for " + ante;
@@ -317,7 +320,7 @@
 	Player.prototype.stand = function() {
 		var timeout = 0;
 
-    running = false;
+		running = false;
 		dealer.flipCards();
 
 		function checkDScore() {
@@ -366,7 +369,6 @@
 		}
 
 		$(score).html(this.getScore());
-		$('#earning span').html(player.getWager());
 		$('#cash span').html(player.getCash());
 		player.getBank();
 	};
@@ -379,10 +381,6 @@
 		    j = j > 3 ? j % 3 : 0;
 	   return s + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '');
 	 };
-
-/*****************************************************************/
-/************************** Functions ****************************/
-/*****************************************************************/
 
 	(function($) {
     $.fn.disableSelection = function() {
@@ -412,8 +410,6 @@
 	}
 
 	function setActions(opts) {
-		var hand = player.getHand();
-
 		if(!running) {
 			$('#deal')  .prop('disabled', false);
 			$('#hit')   .prop('disabled', true);
@@ -554,8 +550,7 @@
 	}
 
 	function getWinner() {
-		var phand    = player.getHand(),
-				dhand    = dealer.getHand(),
+			var phand    = player.getHand(),
 				pscore   = player.getScore(),
 				dscore   = dealer.getScore(),
 				wager    = player.getWager(),
@@ -570,72 +565,99 @@
 				winnings = (wager * 2) + (wager / 2);
 				player.setCash(winnings);
 				player.setBank(winnings - wager);
-				$('#alert').removeClass('alert-info alert-error').addClass('alert-success');
+				$("#earning").html("CONGRATULATIONS YOU WON $" + winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("won");
 				result = 'Blackjack!';
 			} else if(pscore <= 21) {
 				winnings = wager * 2;
 				player.setCash(winnings);
 				player.setBank(winnings - wager);
-				$('#alert').removeClass('alert-info alert-error').addClass('alert-success');
+				$("#earning").html("CONGRATULATIONS YOU WON $" + winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("won");
 				result = 'You win!';
 			} else if(pscore > 21) {
 				winnings -= wager;
 				player.setBank(winnings);
-				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
+				$("#earning").html("Sorry... You lost $" + -winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("lost");
 				result = 'Bust';
 			}
-		} else if(pscore < dscore) {
+		} 
+		
+		else if(pscore < dscore) {
 			if(pscore <= 21 && dscore > 21) {
 				winnings = wager * 2;
 				player.setCash(winnings);
 				player.setBank(winnings - wager);
-				$('#alert').removeClass('alert-info alert-error').addClass('alert-success');
+				$("#earning").html("CONGRATULATIONS YOU WON $" + winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("won");
 				result = 'You win - dealer bust!';
 			} else if(dscore <= 21) {
 				winnings -= wager;
 				player.setBank(winnings);
-				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
+				$("#earning").html("Sorry... You lost $" + -winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("lost");
 				result = 'You lose!';
 			}
-		} else if(pscore === dscore) {
+		} 
+		
+		else if(pscore === dscore) {
 			if(pscore <= 21) {
-				if(dscore === 21 && dhand.length < 3 && phand.length > 2) {
-					winnings -= wager;
-					player.setBank(winnings);
-					$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
-					result = 'You lose - dealer Blackjack!';
-				} else {
-					winnings = wager;
-					$('#alert').removeClass('alert-error alert-success').addClass('alert-info');
-					player.setCash(winnings);
-					result = 'Push';
-				}
+				winnings = wager;
+				player.setCash(winnings);
+				$("#earning").html("It's a tie! No losses or wins");
+				$('#earning').removeClass();
+				$('#earning').addClass("tie");
+				result = 'Push';
 			} else {
 				winnings -= wager;
 				player.setBank(winnings);
-				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
+				$("#earning").html("Sorry... You lost $" + -winnings);
+				$('#earning').removeClass();
+				$('#earning').addClass("lost");
 				result = 'Bust';
 			}
 		}
 
 		showAlert(result);
-
 		dealer.flipCards();
 		dealer.updateBoard();
+		player.updateBoard();
 
-		if(parseInt(player.getCash()) < 1) {
-			$('#myModal').modal();
-			$('#newGame').on('click', function() {
-				player.setCash(1000);
-				$(this).unbind('click');
-				$('#myModal').modal('hide');
+		if(player.getCash() < 1) {
+			document.getElementById("deal").style.display = "none";
+			document.getElementById("hit").style.display = "none";
+			document.getElementById("stand").style.display = "none";
+			document.getElementById("retry").style.display = "inline-block";
+
+			$('#retry').on('click', function() {
+				resetBoard();
+				player.retryCash();
+				document.getElementById("deal").style.display = "inline-block";
+				document.getElementById("hit").style.display = "inline-block";
+				document.getElementById("stand").style.display = "inline-block";
+				document.getElementById("retry").style.display = "none";
 			});
 		}
-	}
 
-/*****************************************************************/
-/*************************** Actions *****************************/
-/*****************************************************************/
+		if(player.getCash() > 99999) {				
+			document.getElementById("deal").style.display = "none";
+			document.getElementById("hit").style.display = "none";
+			document.getElementById("stand").style.display = "none";
+			document.getElementById("bet").style.display = "none";
+			document.getElementById("wager").style.display = "none";
+			$("#earning").html("YOU BEAT THE GAME!");
+			$('#earning').removeClass();
+			$('#earning').addClass("champion");
+			result = "GAME FINISHED";
+			showAlert(result);
+		}
+	}
 
 	$('#deal').on('click', function() {
 		var cash = parseInt(player.getCash());
@@ -646,11 +668,8 @@
 			if($.trim($('#wager').val()) > 0) {
 				game.newGame();
 			} else {
-				$('#alert').removeClass('alert-info alert-success').addClass('alert-error');
 				showAlert('The minimum bet is $1.');
 			}
-		} else {
-			$('#myModal').modal();
 		}
 	});
 
@@ -662,15 +681,8 @@
 		player.stand();
 	});
 
-
-/*****************************************************************/
-/*************************** Loading *****************************/
-/*****************************************************************/
-
 	$('#wager').numOnly();
-	$('#actions:not(#wager), #game, #myModal').disableSelection();
-	$('#newGame, #cancel').on('click', function(e) { e.preventDefault(); });
-	$('#cancel').on('click', function() { $('#myModal').modal('hide'); });
+	$('#actions:not(#wager), #game').disableSelection();
 	$('#wager').val(100);
 	$('#cash span').html(player.getCash());
 	player.getBank();
